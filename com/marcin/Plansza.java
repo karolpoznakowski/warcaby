@@ -14,6 +14,7 @@ public class Plansza {
 
     public Plansza(){
         konstruujPlansze();
+        dodajPionkaCzarnego();
         dodajPionkaBialego();
         rysujPlansze();
     }
@@ -39,7 +40,7 @@ public class Plansza {
 
             for (int j = 3; j< WIDTH; j=j+4){
                 char n = 9608;
-                plansza[i][j] = "x";
+                plansza[i][j] = ""+n;
             }
         }
 
@@ -53,15 +54,39 @@ public class Plansza {
 
     }
 
-    public void dodajPionkaBialego(){
-        for (int i = 1; i<6; i =i+2){
-            for(int j = 3; j<16; j=j+4){
-                biale.add(new Pionek(i,j,true));
+    public void dodajPionkaCzarnego(){
+        for (int i = 1; i<6; i =i+4){
+            for(int j = 3; j<16; j=j+4){                            // pionki w wierszach 6 i 8
+                czarne.add(new Pionek(i,j,true));
             }
+
+        }
+
+        for(int j = 1; j<16; j=j+4){                            // pionki w wierszu 7
+            czarne.add(new Pionek(3,j,true));
+        }
+
+        for (Pionek a:czarne) {
+            char c = 9678;
+            plansza[a.getPosx()][a.getPosy()] = ""+c;            // ustawienie pionków czarnych na planszy
+        }
+    }
+
+    public void dodajPionkaBialego(){
+        for (int i = 11; i<16; i =i+4){
+            for(int j = 1; j<16; j=j+4){                            // pionki w wierszach 1 i 3
+                biale.add(new Pionek(i,j,false));
+            }
+
+        }
+
+        for(int j = 3; j<16; j=j+4){                            // pionki w wierszu 2
+            biale.add(new Pionek(13,j,false));
         }
 
         for (Pionek a:biale) {
-            plansza[a.getPosx()][a.getPosy()] = "O";
+            char c = 9673;
+            plansza[a.getPosx()][a.getPosy()] = ""+c;            // ustawienie pionków białych na planszy
         }
     }
 
