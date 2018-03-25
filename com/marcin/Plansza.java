@@ -8,7 +8,6 @@ public class Plansza {
     private String[][] plansza = new String[WIDTH][HEIGHT];             // tablica z pól planszy
     private String[] kolumny = {"A","B","C","D","E","F","G","H"};
     private String[] wiersze = {"8","7","6","5","4","3","2","1"};
-    private int temp = 0;
     private ArrayList <Pionek> biale = new ArrayList<>();
     private ArrayList<Pionek> czarne = new ArrayList<>();
 
@@ -16,6 +15,7 @@ public class Plansza {
         konstruujPlansze();
         dodajPionkaCzarnego();
         dodajPionkaBialego();
+        ustawPionki();
         rysujPlansze();
     }
 
@@ -66,10 +66,7 @@ public class Plansza {
             czarne.add(new Pionek(3,j,true));
         }
 
-        for (Pionek a:czarne) {
-            char c = 9678;
-            plansza[a.getPosx()][a.getPosy()] = ""+c;            // ustawienie pionków czarnych na planszy
-        }
+
     }
 
     public void dodajPionkaBialego(){
@@ -84,14 +81,23 @@ public class Plansza {
             biale.add(new Pionek(13,j,false));
         }
 
+
+    }
+
+    public void ustawPionki(){
         for (Pionek a:biale) {
             char c = 9673;
-            plansza[a.getPosx()][a.getPosy()] = ""+c;            // ustawienie pionków białych na planszy
+            plansza[a.getPosLiczbowa()][a.getPosAlfabetyczna()] = ""+c;            // ustawienie pionków białych na planszy
+        }
+
+        for (Pionek a:czarne) {
+            char c = 9678;
+            plansza[a.getPosLiczbowa()][a.getPosAlfabetyczna()] = ""+c;            // ustawienie pionków czarnych na planszy
         }
     }
 
-
     public void rysujPlansze(){                                     //narysowanie zawartości planszy
+        int temp = 0;
         for (int i = 0; i<kolumny.length; i++){
             System.out.printf("\t"+"\t"+kolumny[i]);
         }
@@ -121,4 +127,28 @@ public class Plansza {
         }
         System.out.println();
     }
+
+    public Pionek wyszukajPionek(int x, int y){
+        Pionek szukany = null;
+        for (Pionek b:biale) {
+            if (b.getPosAlfabetyczna() == x && b.getPosLiczbowa() == y){
+                System.out.println("To ten pionek");
+                szukany = b;
+
+            } else {
+                System.out.println( " To nie ten pionek");
+            }
+        }
+        return szukany;
+    }
+
+    public void przesunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa){
+        Pionek p =wyszukajPionek(pozLiterowaStara, pozLiczbowaStara);
+        plansza[pozLiczbowaStara] [pozLiterowaStara] = " ";
+        p.wykonajRuch(pozLiterowaStara,pozLiczbowaStara,pozLiterowaNowa,pozLiczbowaNowa);
+        System.out.println(biale.size());
+
+
+    }
+
 }

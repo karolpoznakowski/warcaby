@@ -1,13 +1,13 @@
 package com.marcin;
 
 public class Pionek {
-    private int posx;
-    private int posy;
+    private int posLiczbowa;
+    private int posAlfabetyczna;
     private boolean flag;
 
-    public Pionek(int posx, int posy, boolean flag){
-        this.posx = posx;
-        this.posy = posy;
+    public Pionek(int posLiczbowa, int posAlfabetyczna, boolean flag){
+        this.posLiczbowa = posLiczbowa;
+        this.posAlfabetyczna = posAlfabetyczna;
         this.flag = flag;
     }
 
@@ -15,22 +15,43 @@ public class Pionek {
         this.flag = flag;
     }
 
-    public void setPosy(int posy) {
-        this.posy = posy;
+    public void setPosAlfabetyczna(int posAlfabetyczna) {
+        this.posAlfabetyczna = posAlfabetyczna;
     }
 
-    public void setPosx(int posx) {
-        this.posx = posx;
+    public void setPosLiczbowa(int posLiczbowa) {
+        this.posLiczbowa = posLiczbowa;
     }
 
-    public int getPosx() {
-        return posx;
+    public int getPosLiczbowa() {
+        return posLiczbowa;
     }
 
-    public int getPosy() {
-        return posy;
+    public int getPosAlfabetyczna() {
+        return posAlfabetyczna;
     }
     public boolean isFlag() {
         return flag;
+    }
+
+    public void wykonajRuch(int xs, int ys, int xn, int yn){
+        if (Math.abs(xs-xn)==2 && Math.abs(ys-yn)==2){
+            przesuniecie(xn,yn);
+        } else if (Math.abs(xs-xn)==4 && Math.abs(ys-yn)==4){
+          System.out.print("bicie");
+          bicie();
+        } else {
+            System.out.println("Taki ruch jest niepoprawny");
+        }
+    }
+
+    private void przesuniecie(int xn, int yn){
+        posLiczbowa=yn;
+        posAlfabetyczna=xn;
+        System.out.println("Przesunąłeś pionka");
+    }
+
+    private void bicie(){
+        System.out.println("Zbiłeś pionka");
     }
 }
