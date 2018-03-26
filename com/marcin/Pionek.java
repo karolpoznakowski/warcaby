@@ -39,7 +39,7 @@ public class Pionek {
             przesuniecie(xn,yn);
         } else if (Math.abs(xs-xn)==4 && Math.abs(ys-yn)==4){
           System.out.print("bicie");
-          bicie();
+          bicie(xn,yn);
         } else {
             System.out.println("Taki ruch jest niepoprawny");
         }
@@ -51,7 +51,9 @@ public class Pionek {
         System.out.println("Przesunąłeś pionka");
     }
 
-    private void bicie(){
+    private void bicie(int xn, int yn){
         System.out.println("Zbiłeś pionka");
+        posLiczbowa=yn;
+        posAlfabetyczna=xn;
     }
 }

@@ -1,6 +1,7 @@
 package com.marcin;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Plansza {
     private final int WIDTH = 17;                                       // Szerokość planszy
@@ -139,16 +140,97 @@ public class Plansza {
                 System.out.println( " To nie ten pionek");
             }
         }
+
+        for (Pionek b:czarne) {
+            if (b.getPosAlfabetyczna() == x && b.getPosLiczbowa() == y){
+                System.out.println("To ten pionek");
+                szukany = b;
+
+            } else {
+                System.out.println( " To nie ten pionek");
+            }
+        }
         return szukany;
     }
 
-    public void przesunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa){
+    public void przesunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa, boolean flaga){
         Pionek p =wyszukajPionek(pozLiterowaStara, pozLiczbowaStara);
-        plansza[pozLiczbowaStara] [pozLiterowaStara] = " ";
-        p.wykonajRuch(pozLiterowaStara,pozLiczbowaStara,pozLiterowaNowa,pozLiczbowaNowa);
-        System.out.println(biale.size());
-
-
+        if (p.isFlag() == flaga) {
+            plansza[pozLiczbowaStara][pozLiterowaStara] = " ";
+            p.wykonajRuch(pozLiterowaStara, pozLiczbowaStara, pozLiterowaNowa, pozLiczbowaNowa);
+            usunPionek(pozLiterowaStara, pozLiczbowaStara, pozLiterowaNowa, pozLiczbowaNowa);
+        } else{
+            System.out.println("Ruszasz zły pionek!!!");
+        }
     }
 
+    public int getBialeSize(){
+        return biale.size();
+    }
+
+    public int getCzarneSize(){
+        return czarne.size();
+    }
+
+    public void usunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa){
+        if(pozLiczbowaNowa-pozLiczbowaStara !=2 && pozLiterowaNowa-pozLiterowaStara !=2){
+            int pozLiczbowaBita = pozLiczbowaStara + (pozLiczbowaNowa-pozLiczbowaStara)/2;
+            int pozLiterowaBita = pozLiterowaStara + (pozLiterowaNowa-pozLiterowaStara)/2;
+
+            /*Pionek temp = new Pionek(pozLiczbowaBita,pozLiterowaBita,true);
+            System.out.println(""+temp.getPosLiczbowa()+temp.getPosAlfabetyczna()+temp.isFlag());
+            Iterator <Pionek> iterBiale = biale.iterator();
+            while(iterBiale.hasNext()){
+                Pionek str = iterBiale.next();
+                if( str.equals(temp)){
+                    System.out.println("Ten pionek został zbity");
+                    iterBiale.remove();
+                }
+            }
+
+            Iterator <Pionek> iterCzarne = czarne.iterator();
+            while(iterCzarne.hasNext()){
+                Pionek str = iterCzarne.next();
+                System.out.println(""+str.getPosLiczbowa() + str.getPosAlfabetyczna() + str.isFlag());
+
+
+                if( str.equals(temp)){
+                    System.out.println("Ten pionek został zbity");
+                    iterCzarne.remove();
+                }
+            }*/
+
+
+
+
+            int indexBiale = -1;
+            for (Pionek b:biale) {
+                if (b.getPosAlfabetyczna() == pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita){
+                    System.out.println("Ten pionek został zbity");
+                    indexBiale =  biale.indexOf(b);
+                } else {
+                    System.out.println( "Ten pionek nie został zbity");
+                }
+            }
+            if (indexBiale !=-1){
+                biale.remove(indexBiale);
+            }
+            int indexCzarne = -1;
+            for (Pionek b:czarne) {
+                if (b.getPosAlfabetyczna() ==  pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita){
+                    System.out.println("Ten pionek został zbity");
+                    indexCzarne= czarne.indexOf(b);
+
+                } else {
+                    System.out.println( "Ten pionek nie został zbity");
+                }
+            }
+            if (indexCzarne !=-1){
+                czarne.remove(indexCzarne);
+            }
+            System.out.println("Ilość pionków białych: " + biale.size() + " Ilość pionków czarnych: " + czarne.size());
+            plansza[pozLiczbowaBita][pozLiterowaBita] = " ";
+
+        } else { System.out.println(" do usunięcia nie doszło");}
+    }
 }
