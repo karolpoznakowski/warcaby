@@ -1,7 +1,7 @@
 package com.marcin;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 public class Plansza {
     private final int WIDTH = 17;                                       // Szerokość planszy
@@ -70,6 +70,10 @@ public class Plansza {
 
     }
 
+    public int getBialeSize(){
+        return biale.size();
+    }
+
     public void dodajPionkaBialego(){
         for (int i = 11; i<16; i =i+4){
             for(int j = 1; j<16; j=j+4){                            // pionki w wierszach 1 i 3
@@ -83,6 +87,10 @@ public class Plansza {
         }
 
 
+    }
+
+    public int getCzarneSize(){
+        return czarne.size();
     }
 
     public void ustawPionki(){
@@ -99,31 +107,31 @@ public class Plansza {
 
     public void rysujPlansze(){                                     //narysowanie zawartości planszy
         int temp = 0;
-        for (int i = 0; i<kolumny.length; i++){
+        for (int i = 0; i<kolumny.length; i++){                     //wyświetlenie alfabetycznego oznaczenia kolumn
             System.out.printf("\t"+"\t"+kolumny[i]);
         }
         System.out.println();
         for (int i = 0; i< HEIGHT; i++){
 
-            if (i%2 !=0){
+            if (i%2 !=0){                                              //w wierszach po których porusza się pionek wyświetelenie numerycznego oznaczenia wiersza
                 System.out.printf(wiersze[temp]);
             } else {System.out.printf(" ");}
 
             for (int j = 0; j< HEIGHT; j++){
                 if (plansza[i][j] == null){
-                    System.out.printf("\t"+" ");
+                    System.out.printf("\t"+" ");                       //wyświetlenie pustego pola jeżeli nie ma na nim pionka
                 }else {
-                    System.out.format("\t"+plansza[i][j]);
+                    System.out.format("\t"+plansza[i][j]);              //wyświetlenie pionka
                 }
             }
             if (i%2 !=0){
-                System.out.print(" "+wiersze[temp]);
+                System.out.print(" "+wiersze[temp]);                   //w wierszach po których porusza się pionek wyświetelenie numerycznego oznaczenia wiersza
                 temp++;
             } else {System.out.print(" ");}
 
             System.out.println();
         }
-        for (int i = 0; i<kolumny.length; i++){
+        for (int i = 0; i<kolumny.length; i++){                     //wyświetlenie alfabetycznego oznaczenia kolumn
             System.out.printf( "\t" + "\t"+kolumny[i]);
         }
         System.out.println();
@@ -158,71 +166,37 @@ public class Plansza {
         if (p.isFlag() == flaga) {
             plansza[pozLiczbowaStara][pozLiterowaStara] = " ";
             p.wykonajRuch(pozLiterowaStara, pozLiczbowaStara, pozLiterowaNowa, pozLiczbowaNowa);
-            usunPionek(pozLiterowaStara, pozLiczbowaStara, pozLiterowaNowa, pozLiczbowaNowa);
+            usunPionek(pozLiterowaStara, pozLiczbowaStara, pozLiterowaNowa, pozLiczbowaNowa,flaga);
         } else{
             System.out.println("Ruszasz zły pionek!!!");
         }
     }
 
-    public int getBialeSize(){
-        return biale.size();
-    }
-
-    public int getCzarneSize(){
-        return czarne.size();
-    }
-
-    public void usunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa){
+    public void usunPionek(int pozLiterowaStara, int pozLiczbowaStara, int pozLiterowaNowa, int pozLiczbowaNowa, boolean flaga){
         if(pozLiczbowaNowa-pozLiczbowaStara !=2 && pozLiterowaNowa-pozLiterowaStara !=2){
             int pozLiczbowaBita = pozLiczbowaStara + (pozLiczbowaNowa-pozLiczbowaStara)/2;
             int pozLiterowaBita = pozLiterowaStara + (pozLiterowaNowa-pozLiterowaStara)/2;
-
-            /*Pionek temp = new Pionek(pozLiczbowaBita,pozLiterowaBita,true);
-            System.out.println(""+temp.getPosLiczbowa()+temp.getPosAlfabetyczna()+temp.isFlag());
-            Iterator <Pionek> iterBiale = biale.iterator();
-            while(iterBiale.hasNext()){
-                Pionek str = iterBiale.next();
-                if( str.equals(temp)){
-                    System.out.println("Ten pionek został zbity");
-                    iterBiale.remove();
-                }
-            }
-
-            Iterator <Pionek> iterCzarne = czarne.iterator();
-            while(iterCzarne.hasNext()){
-                Pionek str = iterCzarne.next();
-                System.out.println(""+str.getPosLiczbowa() + str.getPosAlfabetyczna() + str.isFlag());
-
-
-                if( str.equals(temp)){
-                    System.out.println("Ten pionek został zbity");
-                    iterCzarne.remove();
-                }
-            }*/
-
-
-
-
             int indexBiale = -1;
+            int indexCzarne = -1;
             for (Pionek b:biale) {
-                if (b.getPosAlfabetyczna() == pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita){
+                if (b.getPosAlfabetyczna() == pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita && flaga != b.isFlag()){
                     System.out.println("Ten pionek został zbity");
                     indexBiale =  biale.indexOf(b);
-                } else {
-                    System.out.println( "Ten pionek nie został zbity");
+                } else if (flaga == b.isFlag()){
+                    System.out.println( "Nie można zbić własnego pionka");
                 }
             }
             if (indexBiale !=-1){
                 biale.remove(indexBiale);
             }
-            int indexCzarne = -1;
+
             for (Pionek b:czarne) {
-                if (b.getPosAlfabetyczna() ==  pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita){
+                if (b.getPosAlfabetyczna() ==  pozLiterowaBita && b.getPosLiczbowa() == pozLiczbowaBita && flaga != b.isFlag()){
                     System.out.println("Ten pionek został zbity");
                     indexCzarne= czarne.indexOf(b);
 
-                } else {
-                    System.out.println( "Ten pionek nie został zbity");
+                } else if (flaga == b.isFlag()) {
+                    System.out.println( "Nie można zbić własnego pionka");
                 }
             }
             if (indexCzarne !=-1){
@@ -231,6 +205,6 @@ public class Plansza {
             System.out.println("Ilość pionków białych: " + biale.size() + " Ilość pionków czarnych: " + czarne.size());
             plansza[pozLiczbowaBita][pozLiterowaBita] = " ";
 
-        } else { System.out.println(" do usunięcia nie doszło");}
+        }
     }
 }
