@@ -3,7 +3,7 @@ package com.marcin;
 public class Pionek {
     private int posLiczbowa;
     private int posAlfabetyczna;
-    private boolean flag;
+    private boolean flag;                                                   // kolor pionka
 
     public Pionek(int posLiczbowa, int posAlfabetyczna, boolean flag){
         this.posLiczbowa = posLiczbowa;
@@ -41,7 +41,7 @@ public class Pionek {
           System.out.print("bicie");
           bicie(xn,yn);
         } else {
-            System.out.println("Taki ruch jest niepoprawny");
+            throw new IllegalArgumentException("Niepoprawny ruch");
         }
     }
 

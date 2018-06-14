@@ -12,13 +12,22 @@ public class PomocnikGry {
 
     public char[] odczytPozPionka(String t) {
         System.out.println(t);
-        pozPionka = odczyt.nextLine().toLowerCase().toCharArray();
+        boolean flag = false;
+        do {
+            pozPionka = odczyt.nextLine().toLowerCase().toCharArray();
+            if (pozPionka.length>2 ||  Integer.parseInt(""+pozPionka[1]) > 8){
+                System.out.println("Podałeś pole spoza zakresu. Spróbuj ponownie");
+                flag = false;
+            } else {
+                flag = true;
+            }
+        } while (flag != true);
         return pozPionka;
     }
 
 
 
-    public int konwersjaWspolrzedneLiterowe() {
+    public int konwersjaWspolrzedneLiterowe() throws IllegalArgumentException{
         int t;
         char x = pozPionka[0];
         switch (x) {
@@ -47,14 +56,12 @@ public class PomocnikGry {
                 t =  15;
                 break;
             default:
-                t = -1;
-                System.out.println("Coś poszło nie tak");
+                throw new IllegalArgumentException("Podano nieprawidłowe pole");
         }
-        System.out.print(t);
         return t;
     }
 
-    public int konwersjaWspolrzedneLiczbowe() {
+    public int konwersjaWspolrzedneLiczbowe() throws IllegalArgumentException{
         int t;
         char x = pozPionka[1];
         switch (x) {
@@ -83,12 +90,11 @@ public class PomocnikGry {
                 t =  15;
                 break;
             default:
-                t = -1;
-                System.out.println("Coś poszło nie tak");
+                throw new IllegalArgumentException("Podano nieprawidłowe pole");
         }
-        System.out.println(t);
         return t;
     }
+
 
 
 }
